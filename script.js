@@ -45,6 +45,17 @@ function getOperator(equation) {
     return "ERROR";
 }
 
-// function breakDownEquation(equation) {
+function breakDownEquation(equation) {
+    const operator = getOperator(equation);
+    if (operator === "ERROR") {
+        return "ERROR";
+    }
+    const numbers = equation.split(operator);
+    if (!numbers[0] || !numbers[1]) {
+        return "ERROR";
+    }
+    return [numbers[0], numbers[1], operator];
+}
 
-// }
+// for later reference on unpacking arrays
+// const [num1, num2, op] = breakDownEquation("12*20");
