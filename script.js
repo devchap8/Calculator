@@ -25,14 +25,26 @@ function operate(num1, num2, operator) {
         case "*":
             return multiply(num1, num2);
         case "/":
+            if(num2 === 0) return "DIVIDE BY 0 ERROR";
             return divide(num1, num2);
     }
 }
 
+function getOperator(equation) {
+    const operators = ["+", "-", "*", "/"];
+    let validEquation = false;
+    for (operator of operators) {
+        if(equation.includes(operator) && (equation.indexOf(operator) === equation.lastIndexOf(operator))) {
+            validEquation = true;
+            break;
+        }
+    }
+    if (validEquation) {
+        return operator;
+    }
+    return "ERROR";
+}
+
 // function breakDownEquation(equation) {
 
-// }
-
-// function checkOperator(equation) {
-    
 // }
