@@ -1,5 +1,3 @@
-// Mathematical Operations
-
 function add(num1, num2) {
     return num1 + num2;
 }
@@ -27,6 +25,8 @@ function operate(num1, num2, operator) {
         case "/":
             if(num2 === 0) return "DIVIDE BY 0 ERROR";
             return divide(num1, num2);
+        default:
+            return "ERROR";
     }
 }
 
@@ -51,11 +51,14 @@ function breakDownEquation(equation) {
         return "ERROR";
     }
     const numbers = equation.split(operator);
-    if (!numbers[0] || !numbers[1]) {
+    if (   isNaN(parseFloat(numbers[0]))
+        || isNaN(parseFloat(numbers[1]))) {
         return "ERROR";
     }
-    return [numbers[0], numbers[1], operator];
+    return [parseFloat(numbers[0]), parseFloat(numbers[1]), operator];
 }
 
-// for later reference on unpacking arrays
-// const [num1, num2, op] = breakDownEquation("12*20");
+function evaluateEquation(equation) {
+    const [num1, num2, operator] = breakDownEquation(equation);
+    return operate(num1, num2, operator)
+}
