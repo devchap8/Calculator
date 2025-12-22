@@ -36,7 +36,8 @@ function getOperator(equation) {
     const operatorList = ["+", "-", "*", "/"];
     let validEquation = false;
     for (operator of operatorList) {
-        if(equation.includes(operator) && (equation.indexOf(operator) === equation.lastIndexOf(operator))) {
+        if(equation.includes(operator) 
+            && (equation.indexOf(operator) === equation.lastIndexOf(operator))) {
             validEquation = true;
             break;
         }
@@ -62,7 +63,8 @@ function breakDownEquation(equation) {
 
 function evaluateEquation(equation) {
     const [num1, num2, operator] = breakDownEquation(equation);
-    return operate(num1, num2, operator)
+    let solution = operate(num1, num2, operator);
+    return Math.round(solution * 10000) / 10000
 }
 
 // Calculator Functionality
@@ -79,8 +81,15 @@ function clearDisplay() {
     display.textContent = "";
 }
 
+function clearIfError() {
+    if (display.textContent === "ERROR") {
+        clearDisplay();
+    }
+}
+
 back.addEventListener("click", backspace);
 function backspace() {
+    clearIfError();
     display.textContent = display.textContent.slice(0, -1);
 }
 
@@ -88,6 +97,7 @@ for (const digit of digits) {
     digit.addEventListener("click", outputDigit);
 }
 function outputDigit(event) {
+    clearIfError();
     display.textContent += this.textContent;
 }
 
@@ -105,3 +115,14 @@ function useOperator(event) {
     }
 }
 
+equals.addEventListener("click", solveEquation);
+function solveEquation() {
+    const solution = evaluateEquation(display.textContent);
+    if (solution === "DIVIDE BY 0 ERROR") {
+        display.textContent = "Nope!";
+    }
+    else if (solution !== "ERROR" && !isNaN(solution)) {
+        display.textContent = solution;
+    }
+
+}
