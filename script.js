@@ -106,9 +106,8 @@ for (const operator of operators) {
 }
 function useOperator(event) {
     if (operators.some(operator => display.textContent.includes(operator.textContent))) {
-        // Do the function for equals where you evaluate the expression in 
-        //   the display, then display the result and add the operator the 
-        //   user clicked
+        solveEquation();
+        // add operator after equation
     }
     else if (!isNaN(parseFloat(display.textContent))) {
         display.textContent += this.textContent;
