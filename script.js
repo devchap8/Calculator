@@ -33,9 +33,9 @@ function operate(num1, num2, operator) {
 }
 
 function getOperator(equation) {
-    const operators = ["+", "-", "*", "/"];
+    const operatorList = ["+", "-", "*", "/"];
     let validEquation = false;
-    for (operator of operators) {
+    for (operator of operatorList) {
         if(equation.includes(operator) && (equation.indexOf(operator) === equation.lastIndexOf(operator))) {
             validEquation = true;
             break;
@@ -68,9 +68,21 @@ function evaluateEquation(equation) {
 // Calculator Functionality
 
 const display = document.querySelector(".display");
-const digits = Array.from(document.querySelectorAll(".digit"));
 const clear = document.querySelector(".clear");
-const back = document.querySelector(".back")
+const back = document.querySelector(".back");
+const equals = document.querySelector(".equals");
+const digits = Array.from(document.querySelectorAll(".digit"));
+const operators = Array.from(document.querySelectorAll(".operator"));
+
+clear.addEventListener("click", clearDisplay);
+function clearDisplay() {
+    display.textContent = "";
+}
+
+back.addEventListener("click", backspace);
+function backspace() {
+    display.textContent = display.textContent.slice(0, -1);
+}
 
 for (const digit of digits) {
     digit.addEventListener("click", outputDigit);
@@ -79,7 +91,17 @@ function outputDigit(event) {
     display.textContent += this.textContent;
 }
 
-clear.addEventListener("click", clearDisplay);
-function clearDisplay() {
-    display.textContent = "";
+for (const operator of operators) {
+    operator.addEventListener("click", useOperator);
 }
+function useOperator(event) {
+    if (operators.some(operator => display.textContent.includes(operator.textContent))) {
+        // Do the function for equals where you evaluate the expression in 
+        //   the display, then display the result and add the operator the 
+        //   user clicked
+    }
+    else if (!isNaN(parseFloat(display.textContent))) {
+        display.textContent += this.textContent;
+    }
+}
+
