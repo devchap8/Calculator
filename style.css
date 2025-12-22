@@ -7,6 +7,9 @@ body {
 .shell {
     display: flex;
     justify-content: center;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
 
     height: 700px;
     max-height: 700px;
@@ -19,11 +22,31 @@ body {
 
 .display {
     border: 3px solid gray;
-    height: 10%;
+    height: 12%;
     width: 90%;
     margin-top: 4%;
     border-radius: 5%;
     padding: 5px;
 
-    font-size: 55px;
+    font-size: 60px;
+}
+
+.row {
+    display: flex;
+    justify-content: space-evenly;
+    width: 95%;
+    /* border: 2px solid red; */
+    margin: 10px 0;
+    height: 480px;
+}
+
+.btn {
+    width: 20%;
+    font-size: 60px;
+    border-radius: 8%;
+}
+
+.clear,
+.backspace {
+    width: 44%;
 }
