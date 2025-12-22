@@ -64,3 +64,22 @@ function evaluateEquation(equation) {
     const [num1, num2, operator] = breakDownEquation(equation);
     return operate(num1, num2, operator)
 }
+
+// Calculator Functionality
+
+const display = document.querySelector(".display");
+const digits = Array.from(document.querySelectorAll(".digit"));
+const clear = document.querySelector(".clear");
+const back = document.querySelector(".back")
+
+for (const digit of digits) {
+    digit.addEventListener("click", outputDigit);
+}
+function outputDigit(event) {
+    display.textContent += this.textContent;
+}
+
+clear.addEventListener("click", clearDisplay);
+function clearDisplay() {
+    display.textContent = "";
+}
