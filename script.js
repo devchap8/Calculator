@@ -33,32 +33,46 @@ function operate(num1, num2, operator) {
 }
 
 function getOperator(equation) {
+    let equationCopy = equation;
+    let isNegative = false;
+    if (equation.at(0) === "-") {
+        equationCopy = equationCopy.replace("-", "");
+        isNegative = true;
+    }
     const operatorList = ["+", "-", "*", "/"];
     let validEquation = false;
     for (operator of operatorList) {
-        if(equation.includes(operator) 
-            && (equation.indexOf(operator) === equation.lastIndexOf(operator))) {
+        if(equationCopy.includes(operator) 
+            && (equationCopy.indexOf(operator) === equationCopy.lastIndexOf(operator))) {
             validEquation = true;
             break;
         }
     }
     if (validEquation) {
-        return operator;
+        return [operator, isNegative];
     }
-    return "ERROR";
+    return ["ERROR", isNegative];
 }
 
 function breakDownEquation(equation) {
-    const operator = getOperator(equation);
+    const [operator, isNegative] = getOperator(equation);
+    let equationCopy = equation;
+    if (equation.at(0) === "-") {
+        equationCopy = equationCopy.replace("-", "");
+    }
     if (operator === "ERROR") {
         return "ERROR";
     }
-    const numbers = equation.split(operator);
+    let numbers = equationCopy.split(operator);
     if (   isNaN(parseFloat(numbers[0]))
         || isNaN(parseFloat(numbers[1]))) {
         return "ERROR";
     }
+    if (isNegative === true) {
+       numbers[0] = "-" + numbers[0]; 
+    }
     return [parseFloat(numbers[0]), parseFloat(numbers[1]), operator];
+
 }
 
 function evaluateEquation(equation) {
@@ -105,7 +119,11 @@ for (const operator of operators) {
     operator.addEventListener("click", useOperator);
 }
 function useOperator(event) {
-    if (operators.some(operator => display.textContent.includes(operator.textContent))) {
+    let equationCopy = display.textContent;
+    if (equationCopy.at(0) === "-") {
+        equationCopy = equationCopy.replace("-", "");
+    }
+    if (operators.some(operator => equationCopy.includes(operator.textContent))) {
         solveEquation();
         // add operator after equation
     }
