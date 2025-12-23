@@ -78,7 +78,10 @@ function breakDownEquation(equation) {
 function evaluateEquation(equation) {
     const [num1, num2, operator] = breakDownEquation(equation);
     let solution = operate(num1, num2, operator);
-    return Math.round(solution * 10000) / 10000
+    if (solution.toString().includes(".")) {
+        return Math.round(solution * 10000) / 10000;
+    }
+    return solution;
 }
 
 // Calculator Functionality
@@ -119,17 +122,25 @@ for (const operator of operators) {
     operator.addEventListener("click", useOperator);
 }
 function useOperator(event) {
-    let equationCopy = display.textContent;
-    if (equationCopy.at(0) === "-") {
-        equationCopy = equationCopy.replace("-", "");
-    }
+    equationCopy = getEquationCopy();
     if (operators.some(operator => equationCopy.includes(operator.textContent))) {
         solveEquation();
-        // add operator after equation
+        equationCopy = getEquationCopy();
+        if (!operators.some(operator => equationCopy.includes(operator.textContent))) {
+            display.textContent += this.textContent;
+        }
     }
     else if (!isNaN(parseFloat(display.textContent))) {
         display.textContent += this.textContent;
     }
+}
+
+function getEquationCopy() {
+    let equationCopy = display.textContent;
+    if (equationCopy.at(0) === "-") {
+        equationCopy = equationCopy.replace("-", "");
+    }
+    return equationCopy;
 }
 
 equals.addEventListener("click", solveEquation);
@@ -143,3 +154,11 @@ function solveEquation() {
     }
 
 }
+
+/// TODO: 
+///       make the copy of the equation into a function instead of retyping 3
+///       decimal support
+///       make display wrap and expand down
+///       display big numbers in ... *e^ ... 
+///       proper frontend
+///       keyboard support
