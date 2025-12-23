@@ -80,7 +80,7 @@ function evaluateEquation(equation) {
     return solution;
 }
 
-// Calculator Functionality
+// Basic Calculator Functionality
 
 const display = document.querySelector(".display");
 const clear = document.querySelector(".clear");
@@ -151,9 +151,34 @@ function solveEquation() {
 
 }
 
+// Decimal Support
+
+const decimal = document.querySelector(".decimal");
+decimal.addEventListener("click", addDecimal);
+
+function findCurrentNum() {
+    let equationCopy = getEquationCopy(display.textContent);
+    let [operator, _] = getOperator(equationCopy);
+    if (operator === "ERROR") {
+        return display.textContent;
+    }
+    let numbers = equationCopy.split(operator);
+    return numbers[1];
+}
+
+function addDecimal() {
+    const currentNum = findCurrentNum();
+    console.log(currentNum); ////
+    if(!currentNum.includes(".")) {
+        display.textContent += ".";
+    }
+}
+
 /// TODO: 
 ///       decimal support
 ///       make display wrap and expand down
 ///       display big numbers in ... *e^ ... 
 ///       proper frontend
 ///       keyboard support
+
+
