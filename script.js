@@ -33,10 +33,9 @@ function operate(num1, num2, operator) {
 }
 
 function getOperator(equation) {
-    let equationCopy = equation;
     let isNegative = false;
-    if (equation.at(0) === "-") {
-        equationCopy = equationCopy.replace("-", "");
+    let equationCopy = getEquationCopy(equation);
+    if (equationCopy !== equation) {
         isNegative = true;
     }
     const operatorList = ["+", "-", "*", "/"];
@@ -56,10 +55,7 @@ function getOperator(equation) {
 
 function breakDownEquation(equation) {
     const [operator, isNegative] = getOperator(equation);
-    let equationCopy = equation;
-    if (equation.at(0) === "-") {
-        equationCopy = equationCopy.replace("-", "");
-    }
+    let equationCopy = getEquationCopy(equation);
     if (operator === "ERROR") {
         return "ERROR";
     }
@@ -122,10 +118,10 @@ for (const operator of operators) {
     operator.addEventListener("click", useOperator);
 }
 function useOperator(event) {
-    equationCopy = getEquationCopy();
+    equationCopy = getEquationCopy(display.textContent);
     if (operators.some(operator => equationCopy.includes(operator.textContent))) {
         solveEquation();
-        equationCopy = getEquationCopy();
+        equationCopy = getEquationCopy(display.textContent);
         if (!operators.some(operator => equationCopy.includes(operator.textContent))) {
             display.textContent += this.textContent;
         }
@@ -135,8 +131,8 @@ function useOperator(event) {
     }
 }
 
-function getEquationCopy() {
-    let equationCopy = display.textContent;
+function getEquationCopy(equation) {
+    let equationCopy = equation;
     if (equationCopy.at(0) === "-") {
         equationCopy = equationCopy.replace("-", "");
     }
@@ -156,7 +152,6 @@ function solveEquation() {
 }
 
 /// TODO: 
-///       make the copy of the equation into a function instead of retyping 3
 ///       decimal support
 ///       make display wrap and expand down
 ///       display big numbers in ... *e^ ... 
