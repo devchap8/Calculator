@@ -175,9 +175,8 @@ function addDecimal() {
 }
 
 /// TODO: 
-///       decimal support
-///       make display wrap and expand down
 ///       display big numbers in ... *e^ ... 
+///       let more decimals display in answer once display wraps
 ///       proper frontend
 ///       keyboard support
 
