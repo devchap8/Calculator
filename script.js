@@ -75,7 +75,10 @@ function evaluateEquation(equation) {
     const [num1, num2, operator] = breakDownEquation(equation);
     let solution = operate(num1, num2, operator);
     if (solution.toString().includes(".")) {
-        return Math.round(solution * 10000) / 10000;
+        solution = Math.round(solution * 100000000) / 100000000;
+    }
+    if (solution.toString().includes("e")) {
+        solution = solution.toLocaleString('fullwide', {useGrouping:false});
     }
     return solution;
 }
@@ -111,23 +114,25 @@ for (const digit of digits) {
 }
 function outputDigit(event) {
     clearIfError();
-    display.textContent += this.textContent;
+    const value = getClickOrKeyValue(event);
+    display.textContent += value;
 }
 
 for (const operator of operators) {
     operator.addEventListener("click", useOperator);
 }
 function useOperator(event) {
+    const value = getClickOrKeyValue(event);
     equationCopy = getEquationCopy(display.textContent);
     if (operators.some(operator => equationCopy.includes(operator.textContent))) {
         solveEquation();
         equationCopy = getEquationCopy(display.textContent);
         if (!operators.some(operator => equationCopy.includes(operator.textContent))) {
-            display.textContent += this.textContent;
+            display.textContent += value;
         }
     }
     else if (!isNaN(parseFloat(display.textContent))) {
-        display.textContent += this.textContent;
+        display.textContent += value;
     }
 }
 
@@ -168,16 +173,48 @@ function findCurrentNum() {
 
 function addDecimal() {
     const currentNum = findCurrentNum();
-    console.log(currentNum); ////
     if(!currentNum.includes(".")) {
         display.textContent += ".";
     }
 }
 
-/// TODO: 
-///       display big numbers in ... *e^ ... 
-///       let more decimals display in answer once display wraps
-///       proper frontend
-///       keyboard support
+// Keyboard Support
 
+document.addEventListener("keydown", keyboardPress);
+const operatorList = ["+", "-", "*", "/"];
+function keyboardPress(event) {
+    console.log(event.key); 
+    if (event.key === "c"
+       || event.key === " ") {
+        event.preventDefault()
+        clearDisplay();
+    }
+    else if (event.key === "Backspace") {
+        backspace();
+    }
+    else if (event.key === ".") {
+        addDecimal();
+    }
+    else if (event.key === "="
+            || event.key === "Enter") {
+        solveEquation();
+    }
+    else if (!isNaN(parseInt(event.key))) {
+        outputDigit(event);
+    }
+    else if (operatorList.includes(event.key)) {
+        useOperator(event);
+    }
+}
+
+function getClickOrKeyValue(event) {
+    let value;
+    if (event.key) {
+        value = event.key;
+    }
+    else {
+        value = event.target.textContent;
+    }
+    return value;
+}
 
